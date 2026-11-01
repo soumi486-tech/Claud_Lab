@@ -1,0 +1,6 @@
+__DB_ENV_HINT__
+PORT=3000
+# Better Auth: 32+ random chars (openssl rand -base64 32). scaffold.mjs generates one into .env for you.
+BETTER_AUTH_SECRET=
+# Public URL of the deployed app (required in production). Locally it is inferred from the request.
+# BETTER_AUTH_URL=https://your-app.example.com

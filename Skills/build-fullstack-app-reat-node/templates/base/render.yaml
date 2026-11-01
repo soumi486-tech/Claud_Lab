@@ -1,0 +1,21 @@
+# Render Blueprint (https://render.com/docs/blueprint-spec). One web service = the whole app.
+# Secrets are never stored here: `sync: false` makes Render ask for the value when the Blueprint is created.
+services:
+  - type: web
+    name: __APP_SLUG__
+    runtime: node
+    plan: free                          # free spins down after ~15 min idle (slow first request); use starter for always-on
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL
+        sync: false                     # paste the connection string in the Render dashboard
+      - key: BETTER_AUTH_SECRET
+        generateValue: true             # Render generates a random value; do not reuse the local one
+      - key: BETTER_AUTH_URL
+        sync: false                     # https://<service-name>.onrender.com (check the real URL after the first deploy)
+      # TODO(db): for `--db postgres` hosts that need TLS add:  - key: PGSSL / value: "true"
